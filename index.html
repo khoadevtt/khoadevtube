@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khoa A Music</title>
+    <!-- Thêm Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar chứa logo và phần nhập liệu -->
+    <div class="navbar">
+        <div class="logo">
+            <h1>Khoa AMusic</h1>
+        </div>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Tìm kiếm bất cứ gì... ">
+            <span class="material-icons search-icon">search</span>
+        </div>
+    </div>
+
+    <!-- Thông điệp hiển thị khi chưa có kết quả -->
+    <div id="placeholder-message" class="placeholder-message">Hãy tìm kiếm bất kì những gì để hiện Video <br> <br>
+       <i>Make by Khoa Dev</i></div>
+    
+    <!-- Khu vực hiển thị video -->
+    <div class="video-container" id="video-container"></div>
+    
+    <!-- Loading indicator -->
+    <div id="loading" class="loading">Loading...</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<style>
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212; /* Màu nền tối */
+    color: #fff;
+}
+
+.navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    background-color: #1f1f1f;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.logo h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    position: relative;
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 14px 30px 14px 20px;
+    font-size: 18px;
+    border-radius: 50px;  /* Bo tròn với radius lớn */
+    border: 2px solid #333; /* Viền mỏng */
+    outline: none;
+    background-color: #333;
+    color: #fff;
+    transition: border-color 0.3s ease;  /* Hiệu ứng khi focus */
+}
+
+.search-container input:focus {
+    border-color: #ff9800;  /* Màu viền khi focus */
+    box-shadow: 0 0 10px rgba(255, 152, 0, 0.5); /* Tạo hiệu ứng bóng khi focus */
+}
+
+.search-container .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.placeholder-message {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    margin-top: 50px;
+}
+
+.video-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.video-card {
+    width: 100%;
+    max-width: 320px;
+    background-color: #1f1f1f;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: none;
+}
+
+.video-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.video-card .title {
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.video-card .description {
+    padding: 10px;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.loading {
+    text-align: center;
+    margin-top: 20px;
+    display: none;
+}
+
+.video-card iframe {
+    width: 100%;
+    height: 200px;
+    display: none;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 20px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo h1 {
+        font-size: 36px;
+    }
+
+    .search-container {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .video-card {
+        width: 90%;
+        max-width: 400px;
+    }
+}
+
+@media (min-width: 768px) {
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .logo h1 {
+        font-size: 36px;
+    }
+
+    .search-container {
+        width: 50%;
+    }
+
+    .video-card {
+        width: 48%;
+    }
+}
+
+</style>
+
+<script>
+  const apiKey = 'AIzaSyAY73jzXG7LELv9VLJVqwqcdKbeetqipHI';  // Thay bằng API Key của bạn
+const searchInput = document.getElementById('search-input');
+const videoContainer = document.getElementById('video-container');
+const loading = document.getElementById('loading');
+const placeholderMessage = document.getElementById('placeholder-message');
+
+let nextPageToken = '';  // Để lưu token trang tiếp theo
+let searchQuery = '';  // Để lưu truy vấn tìm kiếm
+
+// Hàm tìm kiếm video
+async function searchVideos(query) {
+    loading.style.display = 'block';  // Hiện loading
+    const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&maxResults=12&type=video&key=${apiKey}&pageToken=${nextPageToken}`);
+    const data = await response.json();
+    nextPageToken = data.nextPageToken || '';  // Lưu token trang tiếp theo
+    displayVideos(data.items);
+    loading.style.display = 'none';  // Ẩn loading
+}
+
+// Hàm hiển thị video lên giao diện
+function displayVideos(videos) {
+    placeholderMessage.style.display = 'none';  // Ẩn thông điệp khi có kết quả tìm kiếm
+    videos.forEach(video => {
+        const videoCard = document.createElement('div');
+        videoCard.classList.add('video-card');
+        videoCard.innerHTML = `
+            <img src="${video.snippet.thumbnails.high.url}" alt="Thumbnail">
+            <div class="title">${video.snippet.title}</div>
+            <div class="description">${video.snippet.description}</div>
+            <iframe data-video-id="${video.id.videoId}" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        `;
+        
+        // Lắng nghe sự kiện click vào ảnh
+        const img = videoCard.querySelector('img');
+        img.addEventListener('click', () => {
+            // Ẩn tất cả iframe và hiển thị lại ảnh thu nhỏ
+            const iframes = videoContainer.querySelectorAll('iframe');
+            const imgs = videoContainer.querySelectorAll('img');
+            iframes.forEach(iframe => {
+                iframe.style.display = 'none';  // Ẩn tất cả iframe
+                iframe.src = '';  // Dừng video
+            });
+            imgs.forEach(image => {
+                image.style.display = 'block';  // Hiển thị lại ảnh thu nhỏ
+            });
+
+            // Hiển thị iframe của video đã bấm và ẩn ảnh thu nhỏ
+            const iframe = videoCard.querySelector('iframe');
+            iframe.src = `https://www.youtube.com/embed/${video.id.videoId}?autoplay=1`;  // Chạy video khi bấm vào ảnh
+            iframe.style.display = 'block';  // Hiển thị iframe
+            img.style.display = 'none';  // Ẩn ảnh thu nhỏ
+        });
+        
+        videoContainer.appendChild(videoCard);
+    });
+}
+
+// Hàm tìm kiếm khi nhấn Enter
+searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        searchQuery = searchInput.value.trim();
+        if (searchQuery) {
+            videoContainer.innerHTML = '';  // Xóa kết quả cũ
+            nextPageToken = '';  // Reset token
+            searchVideos(searchQuery);
+        }
+    }
+});
+
+// Tải thêm video khi cuộn đến cuối trang
+window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 && nextPageToken) {
+        searchVideos(searchQuery);
+    }
+});
+
+</script>
