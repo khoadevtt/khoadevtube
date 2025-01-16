@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khoa A Music</title>
+    <title>Khoa A Music ✨</title>
     <!-- Thêm Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -12,13 +12,16 @@
     <!-- Navbar chứa logo và phần nhập liệu -->
     <div class="navbar">
         <div class="logo">
-            <h1>Khoa AMusic</h1>
+            <h1>Khoa Music ✨</h1>
         </div>
         <div class="search-container">
-            <input type="text" id="search-input" placeholder="Tìm kiếm bất cứ gì... ">
+            <input type="text" id="search-input" placeholder="Tìm kiếm bất cứ điều gì... ">
             <span class="material-icons search-icon">search</span>
         </div>
+        <a href="https://www.facebook.com/profile.php?id=61571026329735">Facebook Khoa</a>
     </div>
+
+    
 
     <!-- Thông điệp hiển thị khi chưa có kết quả -->
     <div id="placeholder-message" class="placeholder-message">Hãy tìm kiếm bất kì những gì để hiện Video <br> <br>
@@ -44,6 +47,26 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #121212; /* Màu nền tối */
     color: #fff;
+}
+a {
+    text-decoration: none;  /* Xóa gạch chân */
+    font-size: 18px;  /* Kích thước chữ */
+    color: #0078FF;  /* Màu chữ */
+    font-weight: bold;  /* Đậm chữ */
+    padding: 10px 15px;  /* Thêm khoảng cách xung quanh chữ */
+    border-radius: 5px;  /* Bo tròn viền */
+    background-color: #f1f1f1;  /* Màu nền sáng */
+    transition: all 0.3s ease;  /* Thêm hiệu ứng chuyển tiếp */
+}
+
+a:hover {
+    color: #fff;  /* Màu chữ khi hover */
+    background-color: #0078FF;  /* Màu nền khi hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Thêm bóng đổ khi hover */
+}
+
+a:active {
+    transform: scale(0.98);  /* Hiệu ứng khi click (nén lại một chút) */
 }
 
 .navbar {
