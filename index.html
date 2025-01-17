@@ -42,7 +42,7 @@
 
     <div id="placeholder-message" class="placeholder-message">
        Chuyện gì đã xảy ra với thiết bị của bạn? <br> <br>
-       <i>Chúng tôi đã phát hiện tài thiết bị bạn truy cập vào website đang có sự cố không rõ nguyên nhân, có thể là (Thiết bị giả mạo/lậu, có mã độc, mất data,..)</i><br><br><br>
+       <i>Chúng tôi đã phát hiện thiết bị của bạn đang có sự cố không rõ nguyên nhân, có thể là (Thiết bị giả mạo/lậu, có mã độc, mất data,..)</i><br><br><br>
        
         <a href="https://www.facebook.com/profile.php?id=61571026329735">Liên hệ tôi để khắc phục</a>
     </div>
@@ -441,7 +441,7 @@ window.addEventListener('load', () => {
             searchInput.disabled = false;
             searchInput.style.backgroundColor = "#333"; // Màu nền bình thường
         } else if (status === "Offline") {
-            connectionStatus.innerHTML = '<i style="color: red;">[Xin lỗi, bạn đã bị cấm] </i>(Chúng tôi phát hiện [ thiết bị ] của bạn [ là thiết bị trái phép ])';
+            connectionStatus.innerHTML = '<i style="color: red;">[ Bạn bị cấm ]';
             searchInput.disabled = true;
             searchInput.style.backgroundColor = "#555"; // Màu nền tối
         } else {
