@@ -26,7 +26,19 @@
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Tìm kiếm bất cứ điều gì..." disabled>
             <span class="material-icons search-icon">search</span>
+        </div>
         
+    </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
 
     <div id="placeholder-message" class="placeholder-message">
         Khi bạn tìm kiếm chỉ hiển thị 4 Video. Chúng tôi xin lỗi vì sự bất tiện này! (Chúng tôi đảm bảo các Video sẽ không có quảng cáo nào cả)<br><br>
@@ -371,7 +383,7 @@ const activeUsersElement = document.querySelector('.logo h5');
 
     // Gọi hàm khởi tạo và đặt lịch tăng dần
     initializeActiveUsers();
-    setInterval(incrementActiveUsers, 100); // Tăng sau mỗi 3 giây
+    setInterval(incrementActiveUsers, 1000); // Tăng sau mỗi 3 giây
 
     const audioPlayer = document.getElementById('audio-player');
 let isPlayingAudio = false;
@@ -411,8 +423,34 @@ window.addEventListener('load', () => {
 
     // Simulate loading process
     setTimeout(() => {
-        connectionStatus.innerHTML = '<i>đang yếu</i>';
+        connectionStatus.innerHTML = '<i>🔶 Yếu </i>';
         searchInput.disabled = false; // Enable input field
     }, 4000); // Change status after 3 seconds
+});
+// JavaScript Logic
+window.addEventListener('load', () => {
+    const connectionStatus = document.getElementById('connection-status');
+    const searchInput = document.getElementById('search-input');
+
+    // Hàm mô phỏng trạng thái kết nối
+    function updateConnectionStatus(status) {
+        if (status === "Online") {
+            connectionStatus.innerHTML = '<i>hoạt động</i>';
+            searchInput.disabled = false;
+            searchInput.style.backgroundColor = "#333"; // Màu nền bình thường
+        } else if (status === "Offline") {
+            connectionStatus.innerHTML = '<i style="color: red;">[Xin lỗi, bạn đã bị cấm] </i>(Chúng tôi phát hiện [ thiết bị ] của bạn [ là thiết bị trái phép ])';
+            searchInput.disabled = true;
+            searchInput.style.backgroundColor = "#555"; // Màu nền tối
+        } else {
+            connectionStatus.innerHTML = '<span class="loading-spinner"></span> Đang kết nối...';
+            searchInput.disabled = true;
+            searchInput.style.backgroundColor = "#555"; // Màu nền tối
+        }
+    }
+
+    // Mô phỏng trạng thái kết nối
+    setTimeout(() => updateConnectionStatus("Online"), 3000); // Chuyển sang "hoạt động" sau 3 giây
+    setTimeout(() => updateConnectionStatus("Offline"), 4000); // Chuyển sang "Offline" sau 10 giây
 });
 </script>
