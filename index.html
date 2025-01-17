@@ -4,50 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khoa A Music 🌏</title>
-    <!-- Thêm Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navbar chứa logo và phần nhập liệu -->
+    <!-- Navbar -->
     <div class="navbar">
         <div class="logo">
-            <h1>Khoa Tube 🌏
-                <br>
-            <h5>🤳Số người đang dùng Web: 18.127</h5>
+            <h1>Khoa Tube ᴠɴ</h1>
+            <h5>🤳 Số người đang dùng Web: 18.127</h5>
             <br>
-            <h4>Trạng thái kết nối: <i>Đã kết nối</i></h4>
-            </h1>
+            <div class="status-container">
+                <h4>Trạng thái kết nối: <span id="connection-status"><span class="loading-spinner"></span>chờ kết nối...</span></h4>
+            </div>
         </div>
 
         <div id="audio-container" style="display: none;">
             <audio id="audio-player" controls></audio>
         </div>
-        
+
         <div class="search-container">
-            <input type="text" id="search-input" placeholder="Tìm kiếm bất cứ điều gì... ">
+            <input type="text" id="search-input" placeholder="Tìm kiếm bất cứ điều gì..." disabled>
             <span class="material-icons search-icon">search</span>
         </div>
         <a href="https://www.facebook.com/profile.php?id=61571026329735">Facebook Khoa</a>
     </div>
 
-    
+    <div id="placeholder-message" class="placeholder-message">
+        Khi bạn tìm kiếm chỉ hiển thị 4 Video. Chúng tôi xin lỗi vì sự bất tiện này! (Chúng tôi đảm bảo các Video sẽ không có quảng cáo nào cả)<br><br>
+        <b>Developer: Khoa Dev</b>
+    </div>
 
-    <!-- Thông điệp hiển thị khi chưa có kết quả -->
-    <div id="placeholder-message" class="placeholder-message">Khi bạn tìm kiếm chỉ hiển thị 4 Video. Chúng tôi xin lỗi vì sự bất tiện này! (Chúng tôi đảm bảo các Video sẽ không có quảng cáo nào cả) <br> <br>
-       <i>Developer: Khoa Dev</i></div>
-    
-    <!-- Khu vực hiển thị video -->
     <div class="video-container" id="video-container"></div>
-    
-    <!-- Loading indicator -->
     <div id="loading" class="loading">Loading...</div>
 
     <script src="script.js"></script>
 </body>
 </html>
+
 <style>
- * {
+    * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -237,10 +233,52 @@ a:active {
     }
 }
 
+.loading-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #ccc;
+    border-top: 2px solid #ff9800;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 5px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.search-container input:disabled {
+    background-color: #555;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 14px 30px 14px 20px;
+    font-size: 18px;
+    border-radius: 50px;
+    border: 2px solid #333;
+    outline: none;
+    background-color: #333;
+    color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.search-container input:focus {
+    border-color: #ff9800;
+    box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+}
 </style>
 
 <script>
-  const apiKey = 'AIzaSyCADGtPAM43VlmWjnlNi3MwmBVpp9c5BkY';  // Thay bằng API Key của bạn
+     const apiKey = 'AIzaSyCADGtPAM43VlmWjnlNi3MwmBVpp9c5BkY';  // Thay bằng API Key của bạn
 const searchInput = document.getElementById('search-input');
 const videoContainer = document.getElementById('video-container');
 const loading = document.getElementById('loading');
@@ -368,6 +406,15 @@ window.addEventListener('beforeunload', () => {
     audioPlayer.pause();
     audioPlayer.src = ''; // Ngừng phát và xóa nguồn
 });
+// JavaScript Logic
+window.addEventListener('load', () => {
+    const connectionStatus = document.getElementById('connection-status');
+    const searchInput = document.getElementById('search-input');
 
-
+    // Simulate loading process
+    setTimeout(() => {
+        connectionStatus.innerHTML = '<i>đã kết nối</i>';
+        searchInput.disabled = false; // Enable input field
+    }, 4000); // Change status after 3 seconds
+});
 </script>
